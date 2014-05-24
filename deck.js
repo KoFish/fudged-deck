@@ -13,18 +13,11 @@ $$(document).ready(function() {
             nr = (d1 + d2 + d3 + d4) - 8
         return (nr<0?"-":(nr===0?"":"+")) + ""+Math.abs(nr)
     },
-    generate_card = function() {
-        var card = {'nr': generate_number(),
-                    'moon': randInt() == 1}
-        console.log(card)
-        return card
-    },
     draw_moon = function(parent) {
         var canvas = parent.find('canvas')[0],
             width = parent.width(),
             height = parent.height(),
-            ctx = canvas.getContext('2d'),
-            ratio = height/width
+            ctx = canvas.getContext('2d')
         canvas.width = width
         canvas.height = height
         var x1 = width/2, y1 = height/2, r1=width/2,
@@ -38,17 +31,55 @@ $$(document).ready(function() {
         ctx.closePath()
         ctx.fill()
     },
+    draw_background_1 = function(parent) {
+        var canvas = parent.find('canvas')[0],
+            width = parent.width(),
+            height = parent.height(),
+            ctx = canvas.getContext('2d')
+        canvas.width = width
+        canvas.height = height
+        ctx.beginPath()
+        ctx.moveTo(0, 0)
+        ctx.lineTo(width, height)
+        ctx.stroke()
+    },
+    draw_background_2 = function(parent) {
+        var canvas = parent.find('canvas')[0],
+            width = parent.width(),
+            height = parent.height(),
+            ctx = canvas.getContext('2d')
+        canvas.width = width
+        canvas.height = height
+        ctx.beginPath()
+        ctx.moveTo(0, height)
+        ctx.lineTo(width, 0)
+        ctx.stroke()
+    },
     update_card = function(card) {
+        var bkg = card['background']
         $$('.card .number').html(card['nr'])
-        if (card['moon']) {
-            $$('.card .moon').removeClass('hidden')
-        } else {
-            $$('.card .moon').addClass('hidden')
-        }
+        if (card['moon']) { $$('.card .moon').removeClass('hidden') }
+        else { $$('.card .moon').addClass('hidden') }
+        if (bkg <= 0) { $$('#background-1').addClass('hidden') }
+        if (bkg <= 1) { $$('#background-2').addClass('hidden') }
+        if (bkg >= 1) { $$('#background-1').removeClass('hidden') }
+        if (bkg >= 2) { $$('#background-2').removeClass('hidden') }
+    },
+    generate_card = function() {
+        var card = {'nr': generate_number(),
+                    'moon': randInt() == 1,
+                    'background': randInt(1, 10) == 10 ? (randInt() == 2 ? (randInt() == 2 ? 2 : 1) : 1) : 0}
+        console.log(card)
+        return card
+    },
+    redraw = function() {
+        draw_moon($$('.card .moon'))
+        draw_background_1($$('#background-1'))
+        draw_background_2($$('#background-2'))
     }
 
-    console.log("Ready")
-    $$('.card').on('tap', function() { update_card(generate_card()) })
-    draw_moon($$('.card .moon'))
+    $$(window).on('resize', redraw)
+    $$('.card').tap(function() { update_card(generate_card()) })
+    redraw()
     update_card(generate_card())
 });
