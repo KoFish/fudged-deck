@@ -58,6 +58,15 @@ html, body {
     top: -10%;
 }
 
+.moon canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.moon.hidden {
+    display: none;
+}
+
 #align {
     position: absolute;
     top: 0;
