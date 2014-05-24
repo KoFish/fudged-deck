@@ -2,6 +2,9 @@ html, body {
     height: 100%;
     font-family: 'Droid Sans Mono';
 }
+body {
+    overflow: hidden;
+}
 
 .container {
     margin: 0 auto;
@@ -64,7 +67,7 @@ html, body {
 }
 
 .moon.hidden {
-    display: none;
+    /*display: none;*/
 }
 
 #align {
