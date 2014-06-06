@@ -86,6 +86,11 @@ body {
     width: 50%;
 }
 
+#copyright {
+    font-size: 1.4vw;
+    margin-top: 0.9vw;
+}
+
 .debug {
     /*border: 1px dotted red;*/
 }
