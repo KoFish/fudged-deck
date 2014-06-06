@@ -63,6 +63,14 @@ body {
     height: 100%;
 }
 
+.ladder-text {
+    text-align: center;
+    font-size: 4vw;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+
 .hidden {
     display: none;
 }

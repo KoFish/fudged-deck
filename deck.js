@@ -11,8 +11,28 @@ $$(document).ready(function() {
             d3 = randInt(1, 3),
             d4 = randInt(1, 3),
             nr = (d1 + d2 + d3 + d4) - 8
-        return (nr<0?"-":(nr===0?"":"+")) + ""+Math.abs(nr)
+        return nr
     },
+    number_sign = function(nr) {
+        return (nr<0?"-":(nr===0?"":"+")) + ""+Math.abs(nr)
+    }
+    generate_ladder_text = function(_nr) {
+        var nr = _nr !== undefined ? _nr : generate_number(),
+            texts = ['Terrible',
+                     'Poor',
+                     'Mediocre',
+                     'Average',
+                     'Fair',
+                     'Good',
+                     'Great',
+                     'Superb',
+                     'Fantastic',
+                     'Epic',
+                     'Legendary']
+        console.log(_nr, nr, texts[nr])
+        if (nr >= -2 && nr <= +8) { return texts[nr + 2] }
+        else { return '' }
+    }
     draw_moon = function(parent) {
         var canvas = parent.find('canvas')[0],
             width = parent.width(),
@@ -58,6 +78,7 @@ $$(document).ready(function() {
     update_card = function(card) {
         var bkg = card['background']
         $$('.card .number').html(card['nr'])
+        $$('.ladder-text').html(card['ladder_text'])
         if (card['moon']) { $$('.card .moon').removeClass('hidden') }
         else { $$('.card .moon').addClass('hidden') }
         if (bkg <= 0) { $$('#background-1').addClass('hidden') }
@@ -66,9 +87,14 @@ $$(document).ready(function() {
         if (bkg >= 2) { $$('#background-2').removeClass('hidden') }
     },
     generate_card = function() {
-        var card = {'nr': generate_number(),
-                    'moon': randInt() == 1,
-                    'background': randInt(1, 10) == 10 ? (randInt() == 2 ? (randInt() == 2 ? 2 : 1) : 1) : 0}
+        var nr = generate_number(),
+            ladder_text = generate_ladder_text(nr),
+            moon = randInt() == 1,
+            background = randInt(1, 10) == 10 ? (randInt() == 2 ? (randInt() == 2 ? 2 : 1) : 1) : 0,
+            card = {'nr': number_sign(nr),
+                    'ladder_text': ladder_text,
+                    'moon': moon,
+                    'background': background}
         console.log(card)
         return card
     },
